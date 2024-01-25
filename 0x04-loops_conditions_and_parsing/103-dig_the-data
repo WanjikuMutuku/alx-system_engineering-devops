@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+# groups visitors by IP and HTTP status code, and displays this data.
 
 awk '{arr[$1" "$9]++} END {for (key in arr) print arr[key], key}' apache-access.log | sort -rn
