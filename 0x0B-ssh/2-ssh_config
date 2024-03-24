@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# connect to a server without typing a password.
+
+Host your-server-ip
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
