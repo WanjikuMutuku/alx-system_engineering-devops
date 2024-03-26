@@ -1,0 +1,13 @@
+docker run -p 8080:80 -d -it holbertonschool/265-0
+docker ps
+docker exec -it <container_id> /bin/bash
+cd /etc/apache2/
+nano 000-default.conf
+<Directory /var/www/html>
+       Options Indexes FollowSymLinks
+       AllowOverride None
+       Require all granted
+   </Directory>
+service apache2 restart
+exit
+curl 0:8080
