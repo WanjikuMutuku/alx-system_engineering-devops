@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Update package manager and install Nginx
+apt-get update
+apt-get install -y nginx
+
+# Check and update Nginx configuration
+if ! grep -q "include /etc/nginx/sites-enabled/\*;" /etc/nginx/nginx.conf; then
+    echo "include /etc/nginx/sites-enabled/*;" >> /etc/nginx/nginx.conf
+fi
+
+if ! grep -q "listen 80 default_server;" /etc/nginx/sites-enabled/default; then
+    sed -i 's/listen 80;/listen 80 default_server;/' /etc/nginx/sites-enabled/default
+fi
+
+# Restart Nginx service
+service nginx restart
