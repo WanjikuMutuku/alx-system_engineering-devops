@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# same thing as task 0 but short and sweet
+sed -i 's/listen 80;/listen 80 default_server;/' /etc/nginx/sites-enabled/default
+service nginx restart
+
