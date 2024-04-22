@@ -22,7 +22,8 @@ if __name__ == '__main__':
 
     # Fetch TODO list
     todos_response = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'.format(employee_id))
+        'https://jsonplaceholder.typicode.com/todos?userId={}'
+        .format(employee_id))
 
     if todos_response.status_code != 200:
         print('TODO list not found')
