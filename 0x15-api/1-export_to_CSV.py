@@ -4,48 +4,28 @@ import csv
 import requests
 from sys import argv
 
-if __name__ == '__main__':
-    if len(argv) != 2 or not argv[1].isdigit():
-        print("Usage: python3 1-export_to_CSV.py <employee.id>")
-        exit(1)
+if __name__ == "__main__":
+    response = requests.get('https://jsonplaceholder.typicode.com/todos/')
+    data = response.json()
 
-    employee_id = int(argv[1])
+    row = []
+    response2 = requests.get('https://jsonplaceholder.typicode.com/users')
+    data2 = response2.json()
 
-    #fetch user information
-    user_response = requests.get(
-        'https://jsonplaceholder.typicode.com/users{}'.format(employee_id))
+    for i in data2:
+        if i['id'] == int(argv[1]):
+            employee = i['username']
 
-    if user_response.status_code != 200:
-        print('User not found')
-        exit(1)
+    with open(argv[1] + '.csv', 'w', newline='') as file:
+        writ = csv.writer(file, quoting=csv.QUOTE_ALL)
 
-    user_data = user_response.json()
-    employee_name = user_data.get('name')
+        for i in data:
 
-    #fetch the TODO list
-    todos_response = requests.get(
-        'https://jsonplaceholder.typicode.com/todos?userId={}'
-        .format(employee_id))
+            row = []
+            if i['userId'] == int(argv[1]):
+                row.append(i['userId'])
+                row.append(employee)
+                row.append(i['completed'])
+                row.append(i['title'])
 
-    if todos_response.status_code != 200:
-        prit('TODO list not found')
-        exit(1)
-
-    todos = todos_response.json()
-
-    #prepare CSV data
-    csv_data = []
-    for task in todos:
-        csv_data.append([
-            employee_id,
-            user_data.get('username'),
-            str(task.get('completed')),
-            task.get('title')
-        ])
-    # export to CSV file
-    filename = '{}.csv'.format(employee_id)
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer/writerows(csv_data)
-
-    print('Data exported to {}'.format(filename))
+                writ.writerow(row)
